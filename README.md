@@ -1,10 +1,12 @@
 # Selectorlyzer Analyzers for the .NET Compiler Platform
 
+[![NuGet](https://img.shields.io/nuget/v/Selectorlyzer.Analyzers.svg)](https://www.nuget.org/packages/Selectorlyzer.Analyzers)
+
 Selectorlyzer.Analyzers is a configurable Roslyn Analyzer that uses CSS selector-like syntax for enforcing project specific conventions. 
 
 ## Using Selectorlyzer.Analyzers
 
-The preferable way to use the analyzers is to add the nuget package Selectorlyzer.Analyzers to the project where you want to enforce rules.
+The preferable way to use the analyzers is to add the NuGet package Selectorlyzer.Analyzers to the project where you want to enforce rules.
 
 A `selectorlyzer.json` or `.selectorlyzer.json` file is used to specify rules. 
 
@@ -66,7 +68,7 @@ The following will raise a warning diagnostic if a class ends with `InvalidSuffi
 }
 ```
 
-The following will raise a error if the function `Console.WriteLine` is invoked.
+The following will raise an error diagnostic if the function `Console.WriteLine` is invoked.
 ```json
 {
     "selector": "InvocationExpression[Expression='Console.WriteLine']",
@@ -75,7 +77,7 @@ The following will raise a error if the function `Console.WriteLine` is invoked.
 }
 ```
 
-The following will raise a error if a method is named `DoNotUseMe`.
+The following will raise an error diagnostic if a method is named `DoNotUseMe`.
 ```json
 {
     "selector": ":method:has([Name='DoNotUseMe'])",
@@ -84,7 +86,7 @@ The following will raise a error if a method is named `DoNotUseMe`.
 }
 ```
 
-The following will raise a error if regions are used.
+The following will raise an error diagnostic if regions are used.
 ```json
 {
     "selector": ":method:has([Name='DoNotUseMe'])",
@@ -93,7 +95,7 @@ The following will raise a error if regions are used.
 }
 ```
 
-The following will raise a info diagnostic if a class within the namespace `Repositories` does not implement an self interface.
+The following will raise an info diagnostic if a class within the namespace `Repositories` does not implement an self interface.
 ```json
 {
     "selector": ":namespace[Name$='Repositories'] :class",
@@ -115,7 +117,7 @@ The following rule will raise an error if a class ending with `Controller` conta
 
 ## Selectors 
 
-Selectorlyzer uses a custom version of (Qulaly)[https://github.com/mayuki/Qulaly] a query langage for Roslyn Inspired by [esquery](https://github.com/estools/esquery). These selectors are used to identify speicifc sytax nodes.
+Selectorlyzer uses a custom version of [Qulaly](https://github.com/mayuki/Qulaly) a query langage for Roslyn Inspired by [esquery](https://github.com/estools/esquery). These selectors are used to identify speicifc sytax nodes.
 
 ### Supported Selectors
 
