@@ -5,6 +5,8 @@
 
 Selectorlyzer.Analyzers is a configurable Roslyn Analyzer that uses CSS selector-like syntax for enforcing project specific conventions. 
 
+<img src="https://github.com/rlgnak/Selectorlyzer.Analyzers/assets/1643317/a56e8fef-1e42-47b4-acbf-7be884f91d6f" width="453" height="250">
+
 ## Using Selectorlyzer.Analyzers
 
 The preferable way to use the analyzers is to add the NuGet package Selectorlyzer.Analyzers to the project where you want to enforce rules.
