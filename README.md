@@ -1,6 +1,7 @@
 # Selectorlyzer Analyzers for the .NET Compiler Platform
 
 [![NuGet](https://img.shields.io/nuget/v/Selectorlyzer.Analyzers.svg)](https://www.nuget.org/packages/Selectorlyzer.Analyzers)
+[![Build Status](https://github.com/rlgnak/Selectorlyzer.Analyzers/actions/workflows/dotnet.yml/badge.svg)](https://github.com/rlgnak/Selectorlyzer.Analyzers/actions/workflows/dotnet.yml)
 
 Selectorlyzer.Analyzers is a configurable Roslyn Analyzer that uses CSS selector-like syntax for enforcing project specific conventions. 
 
