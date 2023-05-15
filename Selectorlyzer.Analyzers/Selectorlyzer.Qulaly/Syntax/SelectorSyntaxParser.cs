@@ -120,6 +120,7 @@ namespace Selectorlyzer.Qulaly.Syntax
                     "class" => new ClassPseudoClassSelector(),
                     "method" => new MethodPseudoClassSelector(),
                     "interface" => new InterfacePseudoClassSelector(),
+                    "namespace" => new NamespacePseudoClassSelector(),
                     "lambda" => new LambdaPseudoClassSelector(),
                     "first-child" => new FirstChildPseudoClassSelector(),
                     "last-child" => new LastChildPseudoClassSelector(),

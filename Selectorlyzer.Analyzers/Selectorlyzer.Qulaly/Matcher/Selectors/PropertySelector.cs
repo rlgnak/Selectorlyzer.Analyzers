@@ -18,6 +18,7 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors
             return ctx.Node switch
             {
                 AttributeSyntax attrSyntax => attrSyntax.Name.ToString(),
+                NamespaceDeclarationSyntax attrSyntax => attrSyntax.Name.ToString(),
                 MethodDeclarationSyntax methodDeclSyntax => methodDeclSyntax.Identifier.ToString(),
                 TypeDeclarationSyntax typeDeclSyntax => typeDeclSyntax.Identifier.ToString(),
                 ParameterSyntax paramSyntax => paramSyntax.Identifier.ToString(),

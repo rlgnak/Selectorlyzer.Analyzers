@@ -181,6 +181,14 @@ namespace Qulaly.Tests
         }
 
         [Fact]
+        public void PseudoClass_Namespace()
+        {
+            var selector = new SelectorSyntaxParser().Parse(":namespace");
+            selector.Should().BeOfType<ComplexSelectorList>();
+            selector.ToSelectorString().Should().Be(new ComplexSelectorList(new ComplexSelector(new NamespacePseudoClassSelector())).ToSelectorString());
+        }
+
+        [Fact]
         public void PseudoClass_Lambda()
         {
             var selector = new SelectorSyntaxParser().Parse(":lambda");
