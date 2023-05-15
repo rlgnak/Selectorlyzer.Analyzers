@@ -17,29 +17,29 @@ A `selectorlyzer.json` or `.selectorlyzer.json` file is used to specify rules.
 
 1. Install `Selectorlyzer.Analyzers`.
 1. Create and configure `selectorlyzer.json` file.
-1. Add the following the `.csproj` file
-```xml
-<ItemGroup>
-  <AdditionalFiles Include="selectorlyzer.json" />
-</ItemGroup>
-```
 
 ```json
 {
   "rules": [
     {
-        "selector": ":class:has([Name='InvalidClassName'])",
-        "message": "Classes should not be named 'InvalidClassName'",
-        "severity": "error"
+      "selector": ":class:has([Name='InvalidClassName'])",
+      "message": "Classes should not be named 'InvalidClassName'",
+      "severity": "error"
     },
     {
-        "selector": ":namespace[Name$='Repositories'] :class",
-        "rule": ":implements([Name='I{Name}'])",
-        "message": "Classes within the 'Repositories' namespace should implement a self interface",
-        "severity": "info"
+      "selector": "InvocationExpression[Expression='Console.WriteLine']",
+      "message": "Do not use Console.WriteLine",
+      "severity": "error"
     }
   ]
 }
+```
+
+1. Add the following to the `.csproj` file
+```xml
+<ItemGroup>
+  <AdditionalFiles Include="selectorlyzer.json" />
+</ItemGroup>
 ```
 
 ## Examples
@@ -81,15 +81,6 @@ The following will raise an error diagnostic if the function `Console.WriteLine`
 ```
 
 The following will raise an error diagnostic if a method is named `DoNotUseMe`.
-```json
-{
-    "selector": ":method:has([Name='DoNotUseMe'])",
-    "message": "The method 'DoNotUseMe' should not be used",
-    "severity": "error"
-}
-```
-
-The following will raise an error diagnostic if regions are used.
 ```json
 {
     "selector": ":method:has([Name='DoNotUseMe'])",
