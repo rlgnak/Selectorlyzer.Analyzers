@@ -12,7 +12,6 @@
     <PackageVersion>0.0.1</PackageVersion>
     <Authors>Richard Graves et. al.</Authors>
     <Owners>Richard Graves</Owners>
-    <PackageLicenseUrl>https://github.com/rlgnak/Selectorlyzer.Analyzers/blob/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/rlgnak/Selectorlyzer.Analyzers</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rlgnak/Selectorlyzer.Analyzers</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -20,9 +19,23 @@
     <PackageTags>Selectorlyzer.Analyzers, analyzers</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
     <NoPackageAnalysis>true</NoPackageAnalysis>
-
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
+    <Copyright>Copyright © Richard Graves 2023</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Selectorlyzer.Analyzers\Selectorlyzer.Analyzers.csproj" />

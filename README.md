@@ -66,7 +66,16 @@ The following will raise a warning diagnostic if a class ends with `InvalidSuffi
 }
 ```
 
-The following will raise a error if a method called `DoNotUseMe` is used.
+The following will raise a error if the function `Console.WriteLine` is invoked.
+```json
+{
+    "selector": "InvocationExpression[Expression='Console.WriteLine']",
+    "message": "Do not use Console.WriteLine",
+    "severity": "error"
+}
+```
+
+The following will raise a error if a method is named `DoNotUseMe`.
 ```json
 {
     "selector": ":method:has([Name='DoNotUseMe'])",
