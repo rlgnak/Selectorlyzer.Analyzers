@@ -24,11 +24,6 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
 
     public override void Initialize(AnalysisContext context)
     {
-        if (!Debugger.IsAttached)
-        {
-            //Debugger.Launch();
-        }
-
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
         context.EnableConcurrentExecution();
 
@@ -73,7 +68,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
         }
 
         var qulalySelector = QulalySelector.Parse(selector);
-        var analyzer = new Analyzer(qulalySelector, rule, message, severity);
+        var analyzer = new Analyzer(qulalySelector, rule, message, severity, selectorlyzerRule.IncludeGeneratedCode);
 
         if (qulalySelector.Selector is TypeSelector typeSelector)
         {
@@ -91,17 +86,24 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
         private readonly string? rule;
         private readonly string message;
         private readonly string severity;
+        private readonly bool includeGeneratedCode;
 
-        public Analyzer(QulalySelector selector, string? rule, string message, string severity)
+        public Analyzer(QulalySelector selector, string? rule, string message, string severity, bool includeGeneratedCode)
         {
             this.selector = selector;
             this.rule = rule;
             this.message = message;
             this.severity = severity;
+            this.includeGeneratedCode = includeGeneratedCode;
         }
 
         public void SyntaxTreeAnalysisRule(SyntaxTreeAnalysisContext context)
         {
+            if (includeGeneratedCode && context.IsGeneratedCode)
+            {
+                return;
+            }
+
             foreach (var node in context.Tree.QuerySelectorAll(selector))
             {
                 if (CheckRule(rule, node))
@@ -116,9 +118,14 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
 
         public void SyntaxNodeRule(SyntaxNodeAnalysisContext context)
         {
+            if (includeGeneratedCode && context.IsGeneratedCode)
+            {
+                return;
+            }
+
             var syntax = context.Node;
 
-            var node = syntax?.QuerySelector(selector);
+            var node = syntax?.QuerySelector(selector);           
 
             if (node is null)
             {
@@ -148,12 +155,12 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
 
         private DiagnosticDescriptor GetDiagnosticDescriptor(string severity)
         {
-            if (severity.Equals("Error", StringComparison.InvariantCultureIgnoreCase))
+            if (severity.Equals("Error", StringComparison.OrdinalIgnoreCase))
             {
                 return DiagnosticDescriptors.SelectorlyzerError;
             }
 
-            if (severity.Equals("Info", StringComparison.InvariantCultureIgnoreCase))
+            if (severity.Equals("Info", StringComparison.OrdinalIgnoreCase))
             {
                 return DiagnosticDescriptors.SelectorlyzerInfo;
             }

@@ -9,4 +9,6 @@ public class SelectorlyzerRule
     public string Message { get; set; } = null!;
 
     public string? Severity { get; set; }
+
+    public bool IncludeGeneratedCode { get; set; }
 }
