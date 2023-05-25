@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FluentAssertions;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VerifyCS = Selectorlyzer.Analyzers.Test.CSharpAnalyzerVerifier<
     Selectorlyzer.Analyzers.SelectorlyzerDiagnosticAnalyzer>;
@@ -133,6 +134,21 @@ class InvalidClassName: BaseClass, IValidClassName {}";
                     }
                 }
             }, expected);
+        }
+
+        [Theory]
+        [InlineData("error", DiagnosticDescriptors.ErrorId)]
+        [InlineData("Error", DiagnosticDescriptors.ErrorId)]
+        [InlineData("warning", DiagnosticDescriptors.WarningId)]
+        [InlineData("Warning", DiagnosticDescriptors.WarningId)]
+        [InlineData("info", DiagnosticDescriptors.InfoId)]
+        [InlineData("Info", DiagnosticDescriptors.InfoId)]
+        [InlineData("invalid", DiagnosticDescriptors.WarningId)]
+        [InlineData("other", DiagnosticDescriptors.WarningId)]
+        public void GetDiagnosticDescriptor_returns_correct_diagnostic_descriptor(string severity, string expectedId)
+        {
+            var result = SelectorlyzerDiagnosticAnalyzer.Analyzer.GetDiagnosticDescriptor(severity);
+            result.Id.Should().Be(expectedId);
         }
     }
 }
