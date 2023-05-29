@@ -1,0 +1,7 @@
+<Project>
+    <PropertyGroup>
+        <MicrosoftCodeAnalysisVersion>4.1.0</MicrosoftCodeAnalysisVersion>
+        <MicrosoftCodeAnalysisAnalyzersVersion>3.3.4</MicrosoftCodeAnalysisAnalyzersVersion>
+        <MicrosoftCodeAnalysisCSharpCodeStyleVersion>4.1.0</MicrosoftCodeAnalysisCSharpCodeStyleVersion>
+    </PropertyGroup>
+</Project>

@@ -23,7 +23,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
 
     public override void Initialize(AnalysisContext context)
     {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();
 
         context.RegisterCompilationStartAction(CompilationStartAction);
@@ -67,7 +67,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
         }
 
         var qulalySelector = QulalySelector.Parse(selector);
-        var analyzer = new Analyzer(qulalySelector, rule, message, severity, selectorlyzerRule.IncludeGeneratedCode);
+        var analyzer = new Analyzer(qulalySelector, rule, message, severity);
 
         if (qulalySelector.Selector is TypeSelector typeSelector)
         {
@@ -85,24 +85,17 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
         private readonly string? rule;
         private readonly string message;
         private readonly string severity;
-        private readonly bool includeGeneratedCode;
 
-        public Analyzer(QulalySelector selector, string? rule, string message, string severity, bool includeGeneratedCode)
+        public Analyzer(QulalySelector selector, string? rule, string message, string severity)
         {
             this.selector = selector;
             this.rule = rule;
             this.message = message;
             this.severity = severity;
-            this.includeGeneratedCode = includeGeneratedCode;
         }
 
         public void SyntaxTreeAnalysisRule(SyntaxTreeAnalysisContext context)
         {
-            if (includeGeneratedCode && context.IsGeneratedCode)
-            {
-                return;
-            }
-
             foreach (var node in context.Tree.QuerySelectorAll(selector))
             {
                 if (CheckRule(rule, node))
@@ -117,11 +110,6 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
 
         public void SyntaxNodeRule(SyntaxNodeAnalysisContext context)
         {
-            if (includeGeneratedCode && context.IsGeneratedCode)
-            {
-                return;
-            }
-
             var syntax = context.Node;
 
             var node = syntax?.QuerySelector(selector);           
