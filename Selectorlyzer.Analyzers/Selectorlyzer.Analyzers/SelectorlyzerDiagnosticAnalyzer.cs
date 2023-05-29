@@ -6,7 +6,6 @@ using Selectorlyzer.Qulaly.Matcher.Selectors;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Selectorlyzer.Analyzers;
@@ -80,7 +79,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private sealed class Analyzer
+    internal sealed class Analyzer
     {
         private readonly QulalySelector selector;
         private readonly string? rule;
@@ -141,7 +140,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
             context.ReportDiagnostic(diagnostic);
         }
 
-        private bool CheckRule(string? rule, SyntaxNode node)
+        internal static bool CheckRule(string? rule, SyntaxNode node)
         {
             if (rule is null)
             {
@@ -153,7 +152,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
             return node.QuerySelector(selector) is not null;
         }
 
-        private DiagnosticDescriptor GetDiagnosticDescriptor(string severity)
+        internal static DiagnosticDescriptor GetDiagnosticDescriptor(string severity)
         {
             if (severity.Equals("Error", StringComparison.OrdinalIgnoreCase))
             {
@@ -168,7 +167,7 @@ public class SelectorlyzerDiagnosticAnalyzer : DiagnosticAnalyzer
             return DiagnosticDescriptors.SelectorlyzerWarning;
         }
 
-        private string ReplacePlaceholders(SyntaxNode node, string selector)
+        internal static string ReplacePlaceholders(SyntaxNode node, string selector)
         {
             if (!selector.Contains("{"))
             {
