@@ -2,7 +2,6 @@ using FluentAssertions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Selectorlyzer.Qulaly;
-using System.Text.RegularExpressions;
 
 namespace Qulaly.Tests
 {

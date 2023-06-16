@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Selectorlyzer.LightJson
+﻿namespace Selectorlyzer.LightJson
 {
     /// <summary>
     /// Enumerates the types of Json values.

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
-using Selectorlyzer.LightJson;
 
 namespace Selectorlyzer.LightJson.Serialization
 {

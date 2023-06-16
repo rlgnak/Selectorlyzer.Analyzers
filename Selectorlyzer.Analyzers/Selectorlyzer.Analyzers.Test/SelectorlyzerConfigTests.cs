@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Selectorlyzer.LightJson.Serialization;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Selectorlyzer.Analyzers.Test
 {

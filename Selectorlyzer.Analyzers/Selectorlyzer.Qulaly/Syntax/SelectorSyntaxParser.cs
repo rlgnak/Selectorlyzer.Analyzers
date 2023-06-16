@@ -4,6 +4,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Qulaly.Syntax;
 using Selectorlyzer.Qulaly.Matcher.Selectors;
 using Selectorlyzer.Qulaly.Matcher.Selectors.Combinators;
+using Selectorlyzer.Qulaly.Matcher.Selectors.Properties;
+using Selectorlyzer.Qulaly.Matcher.Selectors.Pseudos;
 
 namespace Selectorlyzer.Qulaly.Syntax
 {
