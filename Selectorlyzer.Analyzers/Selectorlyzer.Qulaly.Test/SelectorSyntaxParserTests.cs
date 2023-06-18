@@ -182,6 +182,26 @@ namespace Qulaly.Tests
             selector.ToSelectorString().Should().Be(new ComplexSelectorList(new ComplexSelector(new InterfacePseudoClassSelector())).ToSelectorString());
         }
 
+        [Theory]
+        [InlineData(":nth-child(even)", "even")]
+        [InlineData(":nth-child(odd)", "odd")]
+        [InlineData(":nth-child(-7)", "-7")]
+        [InlineData(":nth-child(7)", "7")]
+        [InlineData(":nth-child(+7)", "+7")]
+        [InlineData(":nth-child(5n)", "5n")]
+        [InlineData(":nth-child(n+7)", "n+7")]
+        [InlineData(":nth-child(3n + 4)", "3n+4")]
+        [InlineData(":nth-child(-n +3)", "-n+3")]
+        [InlineData(":nth-child(n)", "n")]
+        [InlineData(":nth-child(1)", "1")]
+        [InlineData(":nth-child(0n+ 1)", "0n+1")]
+        public void PseudoClass_Nth_Child(string selectorText, string nthExpression)
+        {
+            var selector = new SelectorSyntaxParser().Parse(selectorText);
+            selector.Should().BeOfType<ComplexSelectorList>();
+            selector.ToSelectorString().Should().Be(new ComplexSelectorList(new ComplexSelector(new NthChildPseudoClassSelector(nthExpression))).ToSelectorString());
+        }
+
         [Fact]
         public void PseudoClass_Namespace()
         {

@@ -115,7 +115,7 @@ Selectorlyzer uses a custom version of [Qulaly](https://github.com/mayuki/Qulaly
 
 ### Supported Selectors
 
-Qulaly supports a subset of [CSS selector level 4](https://www.w3.org/TR/selectors-4/). The selector engine also supports Qulaly-specific extensions to the selector.
+Selectorlizer supports a subset of [CSS selector level 4](https://www.w3.org/TR/selectors-4/). The selector engine also supports Selectorlizer-specific extensions to the selector.
 
 - SyntaxNode Type: `MethodDeclaration`, `ClassDeclaration` ... 
     - See also [SyntaxKind enum](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind?view=roslyn-dotnet)
@@ -134,6 +134,7 @@ Qulaly supports a subset of [CSS selector level 4](https://www.w3.org/TR/selecto
     - [Negation](https://www.w3.org/TR/selectors-4/#negation): `:not(...)`
     - [Matches-any](https://www.w3.org/TR/selectors-4/#matches): `:is(...)`
     - [Relational](https://www.w3.org/TR/selectors-4/#relational): `:has(...)`
+    - [`:nth-child`](https://www.w3.org/TR/selectors-4/#the-nth-child-pseudo)
     - [`:first-child`](https://www.w3.org/TR/selectors-4/#the-first-child-pseudo)
     - [`:last-child`](https://www.w3.org/TR/selectors-4/#the-last-child-pseudo)
 - Attributes (Properties)
@@ -155,5 +156,6 @@ Qulaly supports a subset of [CSS selector level 4](https://www.w3.org/TR/selecto
 MIT License
 ```
 Selectorlyzer.Analyzers Copyright © 2023-present Richard Graves <rlgnak+selectorlyzer@gmail.com>
+
 Qulaly Copyright © 2020-present Mayuki Sawatari <mayuki@misuzilla.org>
 ```

@@ -45,6 +45,7 @@ namespace Selectorlyzer.Qulaly.Syntax
                 ProductionKind.IsPseudoClassSelector => VisitIsPseudoClassSelector(production),
                 ProductionKind.HasPseudoClassSelector => VisitHasPseudoClassSelector(production),
                 ProductionKind.ImplementsPseudoClassSelector => VisitImplementsPseudoClassSelector(production),
+                ProductionKind.NthChildPseudoClassSelector => VisitNthChildPseudoClassSelector(production),
                 ProductionKind.NotPseudoClassSelector => VisitNotPseudoClassSelector(production),
                 ProductionKind.AttributeSelector => VisitAttributeSelector(production),
                 ProductionKind.AttributeSelectorQulalyExtensionNumber => VisitAttributeQulalyExtensionNumberSelector(production),
@@ -68,6 +69,11 @@ namespace Selectorlyzer.Qulaly.Syntax
         {
             var selectorList = production.Children[0]/* PseudoClassSelectorValue */.Children[0]/* ComplexSelectorList */;
             return new ImplementsPseudoClassSelector(selectorList.Children.Select(x => Visit(x)).Cast<Selector>().ToArray());
+        }
+        private SelectorElement VisitNthChildPseudoClassSelector(Production production)
+        {
+            var selectorList = string.Join(string.Empty, production.Children[0].Captures);
+            return new NthChildPseudoClassSelector(selectorList);
         }
         private SelectorElement VisitNotPseudoClassSelector(Production production)
         {

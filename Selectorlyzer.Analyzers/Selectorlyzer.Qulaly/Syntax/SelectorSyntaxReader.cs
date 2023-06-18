@@ -1,3 +1,4 @@
+using Selectorlyzer.Qulaly.Matcher.Selectors.Pseudos;
 using Selectorlyzer.Qulaly.Syntax;
 
 namespace Qulaly.Syntax
@@ -99,11 +100,27 @@ namespace Qulaly.Syntax
                     () => Expect(Char(':')) && Expect(IsPseudoClassSelector),
                     () => Expect(Char(':')) && Expect(HasPseudoClassSelector),
                     () => Expect(Char(':')) && Expect(ImplementsPseudoClassSelector),
+                    () => Expect(Char(':')) && Expect(NthChildPseudoClassSelector),
                     () => Expect(Char(':')) && Expect(NotPseudoClassSelector),
                     () => Expect(Char(':')) && Expect(NotPseudoClassSelector),
                     () => Expect(Char(':')) && Expect(FunctionToken) && Expect(Expression) && Expect(Char(')')),
                     () => Expect(Char(':')) && Expect(Capture(IdentToken))
                 );
+            });
+        }
+
+        public bool NthChildPseudoClassSelector()
+        {
+            // <not-pseudo-class-selector> = 'not' '(' <not-pseudo-class-selector-value> ')'
+            return Production(ProductionKind.NthChildPseudoClassSelector, () =>
+            {
+                return Expect(Chars("nth-child"))
+                       && ExpectZeroOrMore(Space)
+                       && Expect(Char('('))
+                       && ExpectZeroOrMore(Space)
+                       && Expect(Nth)
+                       && ExpectZeroOrMore(Space)
+                       && Expect(Char(')'));
             });
         }
 
@@ -335,14 +352,20 @@ namespace Qulaly.Syntax
             {
                 return ExpectZeroOrMore(Space)
                     && Expect(
-                        () => ExpectZeroOrOne(Char(new[] { '-', '+' }))
-                           && ExpectOneOrMore(CharRange('0', '9'))
-                           && Expect(N)
-                           && ExpectZeroOrOne(() => ExpectZeroOrMore(Space) && Char(new[] { '-', '+' })() && ExpectZeroOrMore(Space) && ExpectOneOrMore(CharRange('0', '9'))),
-                        () => ExpectZeroOrOne(Char(new[] { '-', '+' }))
-                           && ExpectOneOrMore(CharRange('0', '9')),
-                        () => Expect(O) && Expect(D) && Expect(D),
-                        () => Expect(E) && Expect(V) && Expect(E) && Expect(N)
+                        () => 
+                           ExpectZeroOrOne(Capture(() => Expect(Char(new[] { '-', '+' }))))
+                           && ExpectZeroOrMore(Space)
+                           && ExpectZeroOrMore(Capture(() => Expect(CharRange('0', '9'))))
+                           && ExpectZeroOrMore(Space)
+                           && Expect(Capture(() => Expect(N)))
+                           && ExpectZeroOrMore(Space)
+                           && ExpectZeroOrOne(() => ExpectZeroOrMore(Space) && Expect(Capture(() => Expect(Char(new[] { '-', '+' })))) && ExpectZeroOrMore(Space) && ExpectOneOrMore(Capture(() => Expect(CharRange('0', '9'))))),
+                        () =>
+                            ExpectZeroOrOne(Capture(() => Expect(Char(new[] { '-', '+' }))))
+                            && ExpectZeroOrMore(Space)
+                            && ExpectOneOrMore(Capture(() => Expect(CharRange('0', '9')))),
+                        () => Expect(Capture(() => Expect(O) && Expect(D) && Expect(D))),
+                        () => Expect(Capture(() => Expect(E) && Expect(V) && Expect(E) && Expect(N)))
                     )
                     && ExpectZeroOrMore(Space);
             });
