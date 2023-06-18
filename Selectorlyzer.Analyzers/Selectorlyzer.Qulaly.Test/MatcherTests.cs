@@ -356,5 +356,45 @@ namespace ConsoleApp22
             matches.OfType<ClassDeclarationSyntax>().Select(x => x.Identifier.ToString()).Should().ContainInOrder("Class1", "Class2");
         }
 
+
+        [Theory]
+        [InlineData("2n", new[] { "Bar", "Hello" })]
+        [InlineData("2n+1", new[] { "Foo", "World" })]
+        [InlineData("1", new[] { "Foo" })]
+        [InlineData("n", new[] { "Bar", "Foo", "Hello", "World" })]
+        public void NthChild(string expression, string[] expected)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    public class Program
+    {
+        void Bar()
+        {
+        }
+
+        void Foo()
+        {
+        }
+
+        void Hello()
+        {
+        }
+
+        void World()
+        {
+        }
+    }
+}
+");
+            var matches = syntaxTree.QuerySelectorAll($":method:nth-child({expression})").ToArray();
+            matches.Should().HaveCount(expected.Length);
+            matches.OfType<MethodDeclarationSyntax>().Select(x => x.Identifier.ToString()).Should().ContainInOrder(expected);
+        }
+
     }
 }
