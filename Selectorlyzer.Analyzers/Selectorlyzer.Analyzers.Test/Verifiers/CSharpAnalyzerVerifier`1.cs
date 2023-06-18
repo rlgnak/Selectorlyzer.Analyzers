@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis.Testing.Verifiers;
 using System.Threading;
 using System.Threading.Tasks;
 using Selectorlyzer.LightJson.Serialization;
-using System.Data;
 
 namespace Selectorlyzer.Analyzers.Test
 {

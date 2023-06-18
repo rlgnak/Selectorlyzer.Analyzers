@@ -3,6 +3,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Selectorlyzer.Qulaly;
 using Selectorlyzer.Qulaly.Matcher.Selectors;
 using Selectorlyzer.Qulaly.Matcher.Selectors.Combinators;
+using Selectorlyzer.Qulaly.Matcher.Selectors.Properties;
+using Selectorlyzer.Qulaly.Matcher.Selectors.Pseudos;
 using Selectorlyzer.Qulaly.Syntax;
 
 namespace Qulaly.Tests
