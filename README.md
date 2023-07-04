@@ -3,11 +3,11 @@
 [![NuGet](https://img.shields.io/nuget/v/Selectorlyzer.Analyzers.svg)](https://www.nuget.org/packages/Selectorlyzer.Analyzers)
 [![Build Status](https://github.com/rlgnak/Selectorlyzer.Analyzers/actions/workflows/dotnet.yml/badge.svg)](https://github.com/rlgnak/Selectorlyzer.Analyzers/actions/workflows/dotnet.yml)
 
-Selectorlyzer.Analyzers is a configurable Roslyn Analyzer that uses CSS selector-like syntax for enforcing project specific conventions. 
+Selectorlyzer.Analyzers is a highly customizable Roslyn Analyzer designed to empower developers with the ability to create project-specific analyzers using a CSS selector-like syntax.
 
 <img src="https://github.com/rlgnak/Selectorlyzer.Analyzers/assets/1643317/a56e8fef-1e42-47b4-acbf-7be884f91d6f" width="453" height="250">
 
-## Using Selectorlyzer.Analyzers
+## Getting Started
 
 The preferable way to use the analyzers is to add the NuGet package Selectorlyzer.Analyzers to the project where you want to enforce rules.
 
@@ -15,8 +15,13 @@ A `selectorlyzer.json` or `.selectorlyzer.json` file is used to specify rules.
 
 ## Installation
 
-1. Install `Selectorlyzer.Analyzers`.
-1. Create and configure `selectorlyzer.json` file.
+1. Install the NuGet Package `Selectorlyzer.Analyzers`.
+
+```console
+dotnet add package Selectorlyzer.Analyzers
+```
+
+2. Create and configure `selectorlyzer.json` file.
 
 ```json
 {
@@ -30,88 +35,50 @@ A `selectorlyzer.json` or `.selectorlyzer.json` file is used to specify rules.
       "selector": "InvocationExpression[Expression='Console.WriteLine']",
       "message": "Do not use Console.WriteLine",
       "severity": "error"
+    },
+    {
+      "selector": ":class:implements([Name='BaseRepository'])",
+      "rule": ":implements([Name='I{Name}'])",
+      "message": "Do not use Console.WriteLine",
+      "severity": "error"
     }
   ]
 }
 ```
 
-1. Add the following to the `.csproj` file
+3. Add the following to your `.csproj` files
 ```xml
 <ItemGroup>
   <AdditionalFiles Include="selectorlyzer.json" />
 </ItemGroup>
 ```
 
-## Examples
+## Example Rules
 
-The following will raise an error diagnostic if a class is named `InvalidClassName`.
-```json
-{
-    "selector": ":class:has([Name='InvalidClassName'])",
-    "message": "Classes should not be named 'InvalidClassName'",
-    "severity": "error"
-}
-```
+### Naming Conventions
 
-The following will raise a warning diagnostic if a class starts with `InvalidPrefix`.
-```json
-{
-    "selector": ":class:has([Name^='InvalidPrefix'])",
-    "message": "Classes should not start with `InvalidPrefix`",
-    "severity": "warning"
-}
-```
+* `:class:has([Name='InvalidClassName'])` - Classes should not be named `InvalidClassName`
+* `:class:has([Name^='InvalidPrefix'])` - Classes should not start with `InvalidPrefix`
+* `:class:has([Name^='InvalidSuffix'])` - Classes should not end with `InvalidSuffix`
+* `:method:has([Name='InvalidMethodName'])` - Methods should not be named `InvalidMethodName`
+* `:method[Modifiers~='async']:not([Name$='Async'])` - Async method names should end with `Async`
+* `:method[Modifiers~='async'][Name$='Async']` - Async method names should not end with `Async`
+* `PropertyDeclaration[Type^='bool']:not([Identifier$='Flag'])` - Boolean property names should end with `Flag`
 
-The following will raise a warning diagnostic if a class ends with `InvalidSuffix`.
-```json
-{
-    "selector": ":class:has([Name^='InvalidSuffix'])",
-    "message": "Classes should not be end with `InvalidSuffix`",
-    "severity": "warning"
-}
-```
+### Custom Project Conventions
 
-The following will raise an error diagnostic if the function `Console.WriteLine` is invoked.
-```json
-{
-    "selector": "InvocationExpression[Expression='Console.WriteLine']",
-    "message": "Do not use Console.WriteLine",
-    "severity": "error"
-}
-```
+* `InvocationExpression[Expression='Console.WriteLine']` - `Console.WriteLine` should not be used.
+* `InvocationExpression[Expression^='Assert.\']` - Methods starting with `Assert.` should not be used.
+* `:class:implements([Name$='DataTransferObject']) ConstructorDeclaration` - Classes that implement DataTransferObject should not have constructors.
+* `:class[Name$='Controller'] :method[Modifiers~='public'][ReturnType='void']` - Public methdos within classes with names ending in `Controller` should not return `void`.
+* `:class[Name$='Controller'] :method[Modifiers~='public'] Attribute[Name^='Http']` - Public methods within classes with names ending in `Controller` should have an attribute that starts with `Http`
+* `:class:implements([Name='BaseRepository'])` with a rule of `:implements([Name='I{Name}'])` - Classes that implement `BaseRepository` should implement an interface with the same name.
+* `:method Block > * ReturnStatement` - Methods should only have on return statment and it should be the last statement in the method.
 
-The following will raise an error diagnostic if a method is named `DoNotUseMe`.
-```json
-{
-    "selector": ":method:has([Name='DoNotUseMe'])",
-    "message": "The method 'DoNotUseMe' should not be used",
-    "severity": "error"
-}
-```
-
-The following will raise an info diagnostic if a class within the namespace `Repositories` does not implement an self interface.
-```json
-{
-    "selector": ":namespace[Name$='Repositories'] :class",
-    "rule": ":implements([Name='I{Name}'])",
-    "message": "Classes within the 'Repositories' namespace should implement a self interface",
-    "severity": "info"
-}
-```
-
-The following rule will raise an error if a class ending with `Controller` contains public methods without a `Http*` attribute.
-```json
-{
-    "selector": ":class[Name$='Controller'] :method[Modifiers~='public']",
-    "rule": "Attribute[Name^='Http']",
-    "message": "Public methods on controllers should be decorated with a `Http*` attribute",
-    "severity": "error"
-}
-```
 
 ## Selectors 
 
-Selectorlyzer uses a custom version of [Qulaly](https://github.com/mayuki/Qulaly) a query langage for Roslyn Inspired by [esquery](https://github.com/estools/esquery). These selectors are used to identify speicifc sytax nodes.
+Selectorlyzer uses a query langage for Roslyn Inspired by [Qulaly](https://github.com/mayuki/Qulaly) and [esquery](https://github.com/estools/esquery). These selectors are used to identify speicifc sytax nodes.
 
 ### Supported Selectors
 
@@ -144,7 +111,7 @@ Selectorlizer supports a subset of [CSS selector level 4](https://www.w3.org/TR/
     - `[PropName $= 'EndsWith']`
     - `[PropName *= 'Contains']`
     - `[PropName ~= 'Item']` (ex. `[Modifiers ~= 'async']`)
-- Qulaly Extensions
+- Extensions
     - `:implements(...)`: Combinator for checking if a class or interface implements a matching selector
     - `[Name = 'MethodName']`: Name special property
         - `Name` is a special property for convenience that can be used in `MethodDeclaration`, `ClassDeclaration` ... etc
@@ -156,6 +123,4 @@ Selectorlizer supports a subset of [CSS selector level 4](https://www.w3.org/TR/
 MIT License
 ```
 Selectorlyzer.Analyzers Copyright © 2023-present Richard Graves <rlgnak+selectorlyzer@gmail.com>
-
-Qulaly Copyright © 2020-present Mayuki Sawatari <mayuki@misuzilla.org>
 ```
