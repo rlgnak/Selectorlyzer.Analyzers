@@ -4,6 +4,14 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      testing:
+        patterns:
+          - "xunit*"
+          - "Microsoft.VSSDK.BuildTools"
+          - "Microsoft.NET.Test.Sdk"
+          - "FluentAssertions"
+          - "coverlet.collector"
     ignore:
       - dependency-name: "Microsoft.CodeAnalysis"
       - dependency-name: "Microsoft.CodeAnalysis.*"
