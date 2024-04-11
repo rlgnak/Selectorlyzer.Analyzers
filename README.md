@@ -39,7 +39,7 @@ dotnet add package Selectorlyzer.Analyzers
     {
       "selector": ":class:implements([Name='BaseRepository'])",
       "rule": ":implements([Name='I{Name}'])",
-      "message": "Do not use Console.WriteLine",
+      "message": "Classes that implement 'BaseRepository' should implement an interface with the same name.",
       "severity": "error"
     }
   ]
@@ -59,7 +59,7 @@ dotnet add package Selectorlyzer.Analyzers
 
 * `:class:has([Name='InvalidClassName'])` - Classes should not be named `InvalidClassName`
 * `:class:has([Name^='InvalidPrefix'])` - Classes should not start with `InvalidPrefix`
-* `:class:has([Name^='InvalidSuffix'])` - Classes should not end with `InvalidSuffix`
+* `:class:has([Name$='InvalidSuffix'])` - Classes should not end with `InvalidSuffix`
 * `:method:has([Name='InvalidMethodName'])` - Methods should not be named `InvalidMethodName`
 * `:method[Modifiers~='async']:not([Name$='Async'])` - Async method names should end with `Async`
 * `:method[Modifiers~='async'][Name$='Async']` - Async method names should not end with `Async`
