@@ -167,6 +167,14 @@ namespace Qulaly.Tests
         }
 
         [Fact]
+        public void PseudoClass_Property()
+        {
+            var selector = new SelectorSyntaxParser().Parse(":property");
+            selector.Should().BeOfType<ComplexSelectorList>();
+            selector.ToSelectorString().Should().Be(new ComplexSelectorList(new ComplexSelector(new PropertyPseudoClassSelector())).ToSelectorString());
+        }
+
+        [Fact]
         public void PseudoClass_Method()
         {
             var selector = new SelectorSyntaxParser().Parse(":method");
