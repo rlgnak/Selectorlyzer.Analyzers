@@ -163,6 +163,41 @@ namespace ConsoleApp22
         }
 
         [Fact]
+        public void Property()
+        {
+            var selector = QulalySelector.Parse(":property");
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+        }
+    }
+
+    public class Class
+    {
+        public string? PropertyA { get; set; }
+        public string? PropertyB { get; set; }
+    }
+}
+");
+
+            var compilation = CSharpCompilation.Create("Test")
+                .AddSyntaxTrees(syntaxTree);
+
+            var root = syntaxTree.GetCompilationUnitRoot();
+            var matches = root.QuerySelectorAll(selector, compilation).ToArray();
+            matches.Should().HaveCount(2);
+            matches.OfType<PropertyDeclarationSyntax>().Select(x => x.Identifier.ToString()).Should().ContainInOrder("PropertyA", "PropertyB");
+        }
+
+        [Fact]
         public void PropertyCount()
         {
             var selector = QulalySelector.Parse(":method:has(ParameterList[Count > 1])"); // the method has two or more parameters.
@@ -355,7 +390,6 @@ namespace ConsoleApp22
             matches.Should().HaveCount(2);
             matches.OfType<ClassDeclarationSyntax>().Select(x => x.Identifier.ToString()).Should().ContainInOrder("Class1", "Class2");
         }
-
 
         [Theory]
         [InlineData("2n", new[] { "Bar", "Hello" })]
