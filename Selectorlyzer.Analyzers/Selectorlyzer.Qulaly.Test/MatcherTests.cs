@@ -430,5 +430,67 @@ namespace ConsoleApp22
             matches.OfType<MethodDeclarationSyntax>().Select(x => x.Identifier.ToString()).Should().ContainInOrder(expected);
         }
 
+        [Fact]
+        public void Non_Friendly_Name()
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    public static string Value { get; set; }
+
+    public class Program
+    {
+        static void Main(string[] args) => {
+            var value = ConsoleApp22.Value;
+        }
+    }
+}
+");
+
+            var firsts = syntaxTree.QuerySelectorAll("SimpleMemberAccessExpression[Name=Value]").ToArray();
+            firsts.Should().HaveCount(1);
+            firsts.OfType<MemberAccessExpressionSyntax>().Select(x => x.Name.ToFullString()).Should().ContainInOrder("Value");
+        }
+
+
+        [Fact]
+        public void Friendly_Name()
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    public class Program
+    {
+        void Bar()
+        {
+        }
+
+        void Foo()
+        {
+        }
+
+        void Hello()
+        {
+        }
+
+        void World()
+        {
+        }
+    }
+}
+");
+            var firsts = syntaxTree.QuerySelectorAll("MethodDeclaration[Name=Hello]").ToArray();
+            firsts.Should().HaveCount(1);
+            firsts.OfType<MethodDeclarationSyntax>().Select(x => x.Identifier.ToFullString()).Should().ContainInOrder("Hello");
+        }
+
     }
 }

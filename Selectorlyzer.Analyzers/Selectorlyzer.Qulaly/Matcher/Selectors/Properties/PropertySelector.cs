@@ -16,8 +16,6 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors.Properties
         {
             return ctx.Node switch
             {
-                AttributeSyntax attrSyntax => attrSyntax.Name.ToString(),
-                NamespaceDeclarationSyntax attrSyntax => attrSyntax.Name.ToString(),
                 MethodDeclarationSyntax methodDeclSyntax => methodDeclSyntax.Identifier.ToString(),
                 PropertyDeclarationSyntax propertyDeclSyntax => propertyDeclSyntax.Identifier.ToString(),
                 TypeDeclarationSyntax typeDeclSyntax => typeDeclSyntax.Identifier.ToString(),
@@ -31,7 +29,11 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors.Properties
         {
             if (PropertyName == "Name")
             {
-                return GetFriendlyName(ctx);
+                var friendlyName = GetFriendlyName(ctx);
+                if (friendlyName != null)
+                {
+                    return friendlyName;
+                }
             }
 
             var prop = ctx.Node.GetType().GetProperty(PropertyName);
