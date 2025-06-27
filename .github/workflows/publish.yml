@@ -23,16 +23,16 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${{ github.ref_name  }}
+        run: dotnet build --no-restore --configuration Release
       - name: Test
         run: dotnet test --no-build --verbosity normal
+      - name: Pack
+        run: dotnet build  Selectorlyzer.Analyzers/Selectorlyzer.Analyzers.Package --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${VERSION}
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nuget
           if-no-files-found: error
-          path: ${{ env.NuGetDirectory }}/*.nupkg
-      - name: Pack
-        run: dotnet build  Selectorlyzer.Analyzers/Selectorlyzer.Analyzers.Package --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${VERSION}
+          path: ${{ env.NUGET_PACK_DIRECTORY }}/*.nupkg
       - name: Push to NuGet
-        run: dotnet nuget push "${{ env.NuGetDirectory }}/*.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "${{ env.NUGET_PACK_DIRECTORY }}/*.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
