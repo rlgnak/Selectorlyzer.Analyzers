@@ -63,7 +63,7 @@ dotnet add package Selectorlyzer.Analyzers
 * `:method:has([Name='InvalidMethodName'])` - Methods should not be named `InvalidMethodName`
 * `:method[Modifiers~='async']:not([Name$='Async'])` - Async method names should end with `Async`
 * `:method[Modifiers~='async'][Name$='Async']` - Async method names should not end with `Async`
-* `PropertyDeclaration[Type^='bool']:not([Identifier$='Flag'])` - Boolean property names should end with `Flag`
+* `:property[Type^='bool']:not([Identifier$='Flag'])` - Boolean property names should end with `Flag`
 
 ### Custom Project Conventions
 
@@ -92,6 +92,7 @@ Selectorlizer supports a subset of [CSS selector level 4](https://www.w3.org/TR/
     - `:class`
     - `:interface`
     - `:lambda`
+    - `:property`
 - Combinators
     - [Descendant](https://www.w3.org/TR/selectors-4/#descendant-combinators): `node descendant`
     - [Child](https://www.w3.org/TR/selectors-4/#child-combinators): `node > child`
