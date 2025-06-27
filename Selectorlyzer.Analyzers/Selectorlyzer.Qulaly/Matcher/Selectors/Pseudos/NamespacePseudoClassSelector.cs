@@ -6,7 +6,7 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors.Pseudos
     {
         public override SelectorMatcher GetMatcher()
         {
-            return (in SelectorMatcherContext ctx) => ctx.Node is NamespaceDeclarationSyntax;
+            return (in SelectorMatcherContext ctx) => ctx.Node is NamespaceDeclarationSyntax || ctx.Node is FileScopedNamespaceDeclarationSyntax;
         }
 
         public override string ToSelectorString()

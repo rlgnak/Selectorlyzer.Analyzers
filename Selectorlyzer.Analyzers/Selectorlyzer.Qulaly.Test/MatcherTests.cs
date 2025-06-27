@@ -492,5 +492,62 @@ namespace ConsoleApp22
             firsts.OfType<MethodDeclarationSyntax>().Select(x => x.Identifier.ToFullString()).Should().ContainInOrder("Hello");
         }
 
+        [Fact]
+        public void Namespace()
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    public class Test
+    {
+    }
+}
+
+namespace ConsoleApp23
+{
+    public class Test
+    {
+    }
+}
+
+namespace ConsoleApp24
+{
+    public class Test
+    {
+    }
+}
+");
+
+            var matches = syntaxTree.QuerySelectorAll(":namespace:has(:class[Name=Test])").ToArray();
+            matches.Should().HaveCount(3);
+            matches.OfType<NamespaceDeclarationSyntax>().Select(x => x.Name.ToString()).Should().ContainInOrder("ConsoleApp22", "ConsoleApp23", "ConsoleApp24");
+        }
+
+        [Fact]
+        public void File_Scoped_Namespace()
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22;
+
+public class Test
+{
+}
+
+");
+
+            var matches = syntaxTree.QuerySelectorAll(":namespace:has(:class[Name=Test])").ToArray();
+            matches.Should().HaveCount(1);
+            matches.OfType<FileScopedNamespaceDeclarationSyntax>().Select(x => x.Name.ToString()).Should().ContainInOrder("ConsoleApp22");
+        }
+
+
     }
 }
