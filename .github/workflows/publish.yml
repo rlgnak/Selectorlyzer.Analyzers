@@ -20,12 +20,10 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-      - name: Set Version
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${VERSION}
+        run: dotnet build --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${{ github.event.release.tag_name }}
       - name: Test
         run: dotnet test --no-build --verbosity normal
       - name: Upload Artifact
