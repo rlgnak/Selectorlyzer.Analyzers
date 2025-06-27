@@ -19,6 +19,7 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors.Properties
                 AttributeSyntax attrSyntax => attrSyntax.Name.ToString(),
                 NamespaceDeclarationSyntax attrSyntax => attrSyntax.Name.ToString(),
                 MethodDeclarationSyntax methodDeclSyntax => methodDeclSyntax.Identifier.ToString(),
+                PropertyDeclarationSyntax propertyDeclSyntax => propertyDeclSyntax.Identifier.ToString(),
                 TypeDeclarationSyntax typeDeclSyntax => typeDeclSyntax.Identifier.ToString(),
                 ParameterSyntax paramSyntax => paramSyntax.Identifier.ToString(),
                 NameSyntax nameSyntax => nameSyntax.ToString(),
