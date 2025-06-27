@@ -1,0 +1,40 @@
+name: .NET
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  NUGET_PACK_DIRECTORY: ${{ github.workspace}}/nuget_pack
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - name: Set Version
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${VERSION}
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          if-no-files-found: error
+          path: ${{ env.NuGetDirectory }}/*.nupkg
+      - name: Pack
+        run: dotnet build  Selectorlyzer.Analyzers/Selectorlyzer.Analyzers.Package --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${VERSION}
+      - name: Push to NuGet
+        run: dotnet nuget push "${{ env.NuGetDirectory }}/*.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
