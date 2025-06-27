@@ -27,7 +27,7 @@ jobs:
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration Release
       - name: Pack
-        run: dotnet build  Selectorlyzer.Analyzers/Selectorlyzer.Analyzers.Package --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion=${VERSION}
+        run: dotnet build  Selectorlyzer.Analyzers/Selectorlyzer.Analyzers.Package --no-restore --configuration Release --output ${{ env.NUGET_PACK_DIRECTORY }} /p:PackageVersion==${{ github.ref_name  }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
