@@ -1,0 +1,24 @@
+﻿@using MudBlazor.Utilities
+@typeparam T where T : class
+
+<ul class="@(TreeViewClassname())">
+    <Virtualize Items="viewList" ItemSize="40" Context="viewListItem">
+        <li @key="@(viewListItem.Key)" style="flex-shrink: 0; margin-left: @(viewListItem.Level * 3)pt; "
+            class="@(ListItemClassname())">
+            <div class="@(ContentClassname(viewListItem.Item == selectedValue))"
+                @onclick="@(() => onSelect(viewListItem))" @onclick:stopPropagation="true">
+                <MudTreeViewItemToggleButton Visible="ChildrenSelector?.Invoke(viewListItem.Item)?.Count > 0"
+                    Expanded="@viewListItem.IsExpanded"
+                    ExpandedChanged="newIsExpanded => OnClick(newIsExpanded, viewListItem)" />
+                @if (ItemTemplate == null)
+                {
+                    @viewListItem.Item
+                }
+                else
+                {
+                    @ItemTemplate(viewListItem.Item)
+                }
+            </div>
+        </li>
+    </Virtualize>
+</ul>

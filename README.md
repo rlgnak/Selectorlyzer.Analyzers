@@ -53,6 +53,10 @@ dotnet add package Selectorlyzer.Analyzers
 </ItemGroup>
 ```
 
+## Visualizer
+
+https://rlgnak.github.io/Selectorlyzer.Analyzers
+
 ## Example Rules
 
 ### Naming Conventions

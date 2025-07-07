@@ -1,0 +1,30 @@
+@using Microsoft.CodeAnalysis
+@using System.Reflection
+@if (SelectedValue != null)
+{
+    <h3 class="pb-4">Type: @SelectedValue.GetType().Name</h3>
+
+    <MudSimpleTable Hover="true" Dense="true">
+        <thead>
+            <tr>
+                <th>Property Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var property in SelectorProperties ?? [])
+            {
+                <tr>
+                    <td>@property.Name</td>
+                    <td>@(property.GetValue(SelectedValue)?.ToString())</td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+}
+else
+{
+    <p>
+        Select a syntax node in the editor to view its properties.
+    </p>
+}

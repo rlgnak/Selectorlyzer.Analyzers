@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="BlazorMonaco" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.16" />
+    <PackageReference
+      Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer"
+      Version="8.0.16"
+      PrivateAssets="all"
+    />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.1.0" />
+    <PackageReference
+      Include="Microsoft.CodeAnalysis.CSharp"
+      Version="$(MicrosoftCodeAnalysisCSharpCodeStyleVersion)"
+    />
+    <PackageReference Include="MudBlazor" Version="8.9.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Selectorlyzer.Analyzers\Selectorlyzer.Qulaly\Selectorlyzer.Qulaly.csproj" />
+  </ItemGroup>
+</Project>

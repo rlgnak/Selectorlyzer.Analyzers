@@ -49,7 +49,7 @@ jobs:
         uses: SteveSandersonMS/ghaction-rewrite-base-href@5b54862a8831e012d4f1a8b2660894415fdde8ec # v1.1.0
         with:
           html_path: ${{ env.PUBLISH_DIR }}/index.html
-          base_href: /blazor-samples/
+          base_href: /Selectorlyzer.Analyzers/
         
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0

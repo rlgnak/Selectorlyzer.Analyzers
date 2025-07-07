@@ -1,0 +1,10 @@
+@using Microsoft.CodeAnalysis
+
+<VirtualTreeView Items="@RootList" SelectedValue="SelectedValue" ParentSelector="@((node) => node.Parent)"
+    ChildrenSelector="@((node) => node.ChildNodes().ToList())">
+    <ItemTemplate>
+        <div @onclick="@((x) => OnItemClicked(@context))" @onclick:stopPropagation="true">
+            @context.GetType().Name.Replace("Syntax", "")
+        </div>
+    </ItemTemplate>
+</VirtualTreeView>

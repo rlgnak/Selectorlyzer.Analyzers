@@ -1,0 +1,140 @@
+﻿@page "/"
+@inherits HomeComponent
+@using Microsoft.CodeAnalysis
+@using Microsoft.CodeAnalysis.CSharp
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@using Selectorlyzer.Qulaly
+@using Selectorlyzer.Visualizer.Components
+
+@inject IJSRuntime JsRuntime
+
+<PageTitle>Home</PageTitle>
+
+<style>
+    #CodeEditor {
+        height: 100%;
+        margin-left: -16px;
+        width: 100%;
+    }
+
+    .highlight-1 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #E57373;
+        /* soft red */
+    }
+
+    .highlight-2 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #64B5F6;
+        /* sky blue */
+    }
+
+    .highlight-3 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #81C784;
+        /* soft green */
+    }
+
+    .highlight-4 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #FFD54F;
+        /* amber */
+    }
+
+    .highlight-5 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #BA68C8;
+        /* violet */
+    }
+
+    .highlight-6 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #4DB6AC;
+        /* teal */
+    }
+
+    .highlight-7 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #FF8A65;
+        /* orange */
+    }
+
+    .highlight-8 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #7986CB;
+        /* indigo */
+    }
+
+    .highlight-9 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #A1887F;
+        /* brown/sepia */
+    }
+
+    .highlight-10 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #F06292;
+        /* pink */
+    }
+
+    .highlight-11 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #90A4AE;
+        /* slate gray */
+    }
+
+    .highlight-12 {
+        text-decoration-line: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: #AED581;
+        /* lime green */
+    }
+
+    html,
+    body,
+    #app {
+        height: 100%;
+        max-width: 1600px;
+        margin: auto;
+    }
+</style>
+
+<div class="d-flex flex-grow-1 gap-4 pa-4" style="height: 100%;">
+    <div class="d-flex flex-column flex-grow-1 gap-4">
+        <div class="px-4" style="width:100%">
+            <h2>Selectorlizer Query</h2>
+            <MudTextField T="string" ValueChanged="OnInputQuery" Immediate="true"
+                HelperText="Enter a Selectorlizer. The matches will be underlines with a wavy line.">
+            </MudTextField>
+        </div>
+        <div class="px-4" style="width:100%">
+            <h2>Selected Syntax Node Query</h2>
+            <SyntaxNodeQueryComponent />
+        </div>
+        <div class="d-block px-4 flex-grow-1" style="width:100%">
+            <h2>Code Editor</h2>
+            <CodeEditorComponent />
+        </div>
+    </div>
+    <div style="width:400px;" class="px-4">
+        <h2>Syntax Tree</h2>
+        <div class="overflow-auto" style="height: 40vh;">
+            <SyntaxTreeComponent />
+        </div>
+        <h2 class="pt-4">Selected Node Properties</h2>
+        <div class="overflow-auto" style="height: 40vh;">
+            <SyntaxNodePropertyListComponent />
+        </div>
+    </div>
+</div>

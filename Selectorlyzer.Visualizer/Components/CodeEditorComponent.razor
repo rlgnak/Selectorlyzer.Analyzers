@@ -1,0 +1,22 @@
+@using Microsoft.CodeAnalysis
+@using Microsoft.CodeAnalysis.CSharp
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@using Selectorlyzer.Qulaly
+
+<style>
+    .selected-node {
+        background-color: var(--mud-palette-warning-lighten);
+    }
+
+    .monaco-editor {
+        outline: 0;
+    }
+
+    .monaco-editor .selected-node {
+        background-color: var(--mud-palette-warning-lighten);
+    }
+</style>
+
+<StandaloneCodeEditor @ref="CodeEditorReference" Id="CodeEditor" ConstructionOptions="EditorConstructionOptions"
+    OnDidChangeCursorPosition="EditorDidChangeCursorPosition" OnDidChangeModelContent="EditorOnModelContentChanged"
+    OnDidInit="EditorOnDidInit" OnDidPaste="EditorOnDidPaste" />
