@@ -8,6 +8,9 @@ namespace Selectorlyzer.Visualizer.Components
     public partial class CodeEditorComponent
     {
         [Inject]
+        public required ILogger<CodeEditorComponent> Logger { get; set; }
+
+        [Inject]
         public required ICodeContainer CodeContainer { get; set; }
 
         [Inject]
@@ -51,6 +54,7 @@ namespace Selectorlyzer.Visualizer.Components
                 },
                 FoldingHighlight = false,
                 CopyWithSyntaxHighlighting = false,
+                FixedOverflowWidgets = true,
             };
         }
 
@@ -60,13 +64,21 @@ namespace Selectorlyzer.Visualizer.Components
 
             if (CodeContainer.CompilationUnit != null)
             {
-                selectedNode = CodeContainer.CompilationUnit.SyntaxTree.FindNodeByLineColumn(
-                    eventArgs.Position.LineNumber,
-                    eventArgs.Position.Column
-                );
-            }
+                try
+                {
+                    selectedNode = CodeContainer.CompilationUnit.SyntaxTree.FindNodeByLineColumn(
+                        eventArgs.Position.LineNumber,
+                        eventArgs.Position.Column
+                    );
 
-            SelectedNodeContainer.Selector = selectedNode;
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "Error during EditorDidChangeCursorPosition");
+                }
+
+                SelectedNodeContainer.Selector = selectedNode;
+            }
         }
 
         protected async Task EditorOnDidInit()
@@ -77,26 +89,40 @@ namespace Selectorlyzer.Visualizer.Components
         private async Task EditorOnDidPaste(PasteEvent args)
         {
             CodeContainer.Code = await CodeEditorReference.GetValue();
+            await ClearDecorators();
         }
 
         protected async Task EditorOnModelContentChanged(ModelContentChangedEvent keyboardEvent)
         {
             CodeContainer.Code = await CodeEditorReference.GetValue();
+            await ClearDecorators();
         }
 
-        protected async Task HighlightSyntaxNode()
+        private async Task ClearDecorators()
+        {
+            SelectedNodeDecorator = null;
+            MatchedDecorators = [];
+            await UpdateDecorators([]);
+        }
+
+        private async Task HighlightSyntaxNode()
         {
             SelectedNodeDecorator = HighlightSynatxNode(SelectedNodeContainer.Selector, "selected-node");
+            await UpdateDecorators([SelectedNodeDecorator, .. MatchedDecorators]);
+        }
+
+        private async Task UpdateDecorators(List<ModelDeltaDecoration?> decorations)
+        {
 
             var model = await CodeEditorReference.GetModel();
             CodeEditorHighlightDecorators = await model.DeltaDecorations(
                 CodeEditorHighlightDecorators,
-                [SelectedNodeDecorator, .. MatchedDecorators],
+                decorations,
                 default
             );
         }
 
-        protected async Task HighlightQulayQuery()
+        private async Task HighlightQulayQuery()
         {
             IEnumerable<SyntaxNode> nodes;
 
@@ -112,23 +138,21 @@ namespace Selectorlyzer.Visualizer.Components
                         .SyntaxTree.GetRoot()
                         .QuerySelectorAll(QueryContainer.Selector);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Logger.LogError(e, "Error during HighlightQulayQuery");
                     nodes = [];
                 }
             }
 
             MatchedDecorators = HighlightSynatxNodes(nodes, "highlight-", true);
 
-            var model = await CodeEditorReference.GetModel();
-            CodeEditorHighlightDecorators = await model.DeltaDecorations(
-                CodeEditorHighlightDecorators,
-                [SelectedNodeDecorator, .. MatchedDecorators],
-                default
-            );
+
+            await UpdateDecorators([SelectedNodeDecorator, .. MatchedDecorators]);
+
         }
 
-        protected ModelDeltaDecoration? HighlightSynatxNode(SyntaxNode? syntaxNode, string className)
+        private ModelDeltaDecoration? HighlightSynatxNode(SyntaxNode? syntaxNode, string className)
         {
             if (syntaxNode == null)
             {
@@ -141,13 +165,14 @@ namespace Selectorlyzer.Visualizer.Components
                 var decorator = CreateHighlightModelDeltaDecoration(syntaxNode, className);
                 return decorator;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogError(e, "Error during HighlightSynatxNode");
                 return null;
             }
         }
 
-        protected List<ModelDeltaDecoration> HighlightSynatxNodes(IEnumerable<SyntaxNode> syntaxNodes, string className, bool appendIndex)
+        private List<ModelDeltaDecoration> HighlightSynatxNodes(IEnumerable<SyntaxNode> syntaxNodes, string className, bool appendIndex)
         {
             var matchedDecorators = new List<ModelDeltaDecoration>();
 
@@ -164,8 +189,9 @@ namespace Selectorlyzer.Visualizer.Components
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogError(e, "Error during HighlightSynatxNodes");
                 matchedDecorators = [];
             }
 

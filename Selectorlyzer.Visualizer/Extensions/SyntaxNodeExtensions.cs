@@ -9,28 +9,21 @@ public static class SyntaxNodeExtensions
             int targetColumn
         )
     {
-        try
+        var root = syntaxTree.GetRoot();
+        var sourceText = syntaxTree.GetText();
+
+        var textLine = sourceText.Lines[targetLine - 1];
+        int position = textLine.Start + targetColumn - 1;
+
+        var token = root.FindToken(position);
+
+        var matchingNode = root.FindNode(token.Span, getInnermostNodeForTie: true);
+
+        if (matchingNode is IdentifierNameSyntax)
         {
-            var root = syntaxTree.GetRoot();
-            var sourceText = syntaxTree.GetText();
-
-            var textLine = sourceText.Lines[targetLine - 1];
-            int position = textLine.Start + targetColumn;
-
-            var token = root.FindToken(position);
-
-            var matchingNode = root.FindNode(token.Span, getInnermostNodeForTie: true);
-
-            if (matchingNode is IdentifierNameSyntax)
-            {
-                matchingNode = matchingNode.Parent;
-            }
-
-            return matchingNode;
+            matchingNode = matchingNode.Parent;
         }
-        catch
-        {
-            return null;
-        }
+
+        return matchingNode;
     }
 }

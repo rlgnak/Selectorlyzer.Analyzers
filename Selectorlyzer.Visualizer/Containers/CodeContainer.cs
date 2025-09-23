@@ -16,7 +16,7 @@ public class CodeContainer : ICodeContainer
 
     private CompilationUnitSyntax? compilationUnit;
 
-    public CodeContainer()
+    public CodeContainer(ILogger<CodeContainer> logger)
     {
         Code = """
 namespace Selectorlyzer.Qulaly.Matcher.Selectors
@@ -32,6 +32,7 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors
     }
 }
 """;
+        Logger = logger;
     }
 
     public string? Code
@@ -40,8 +41,8 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors
         set
         {
             code = value;
-            NotifyStateChanged();
             CreateCompilationUnitSyntax();
+            NotifyStateChanged();
         }
     }
 
@@ -49,6 +50,7 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors
     {
         get => compilationUnit;
     }
+    public ILogger<CodeContainer> Logger { get; }
 
     public event Func<Task>? OnChange;
 
@@ -67,8 +69,9 @@ namespace Selectorlyzer.Qulaly.Matcher.Selectors
                 compilationUnit = null;
             }
         }
-        catch
+        catch (Exception e)
         {
+            Logger.LogError(e, "Error during CreateCompilationUnitSyntax");
             compilationUnit = null;
         }
     }
