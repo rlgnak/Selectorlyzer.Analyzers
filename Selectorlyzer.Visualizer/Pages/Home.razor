@@ -114,7 +114,7 @@
     <div class="d-flex flex-column flex-grow-1 gap-4">
         <div class="px-4" style="width:100%">
             <h2>Selectorlizer Query</h2>
-            <MudTextField T="string" ValueChanged="OnInputQuery" Immediate="true"
+            <MudTextField T="string" OnDebounceIntervalElapsed="OnInputQuery" DebounceInterval="100"
                 HelperText="Enter a selector. The matches will be underlined with a wavy line.">
             </MudTextField>
         </div>

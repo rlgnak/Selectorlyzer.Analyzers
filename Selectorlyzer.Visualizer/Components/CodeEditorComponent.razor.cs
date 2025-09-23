@@ -21,7 +21,7 @@ namespace Selectorlyzer.Visualizer.Components
 
         protected StandaloneCodeEditor CodeEditorReference { get; set; } = null!;
 
-        protected List<string>? CodeEditorHighlightDecorators { get; set; }
+        protected List<string>? CodeEditorHighlightDecorators { get; set; } = [];
 
         private IEnumerable<ModelDeltaDecoration> MatchedDecorators { get; set; } = [];
 
@@ -101,14 +101,13 @@ namespace Selectorlyzer.Visualizer.Components
         private async Task ClearDecorators()
         {
             SelectedNodeDecorator = null;
-            MatchedDecorators = [];
-            await UpdateDecorators([]);
+            await HighlightQulayQuery();
         }
 
         private async Task HighlightSyntaxNode()
         {
             SelectedNodeDecorator = HighlightSynatxNode(SelectedNodeContainer.Selector, "selected-node");
-            await UpdateDecorators([SelectedNodeDecorator, .. MatchedDecorators]);
+            await UpdateDecorators(SelectedNodeDecorator == null ? [.. MatchedDecorators] : [SelectedNodeDecorator, .. MatchedDecorators]);
         }
 
         private async Task UpdateDecorators(List<ModelDeltaDecoration?> decorations)
@@ -124,6 +123,7 @@ namespace Selectorlyzer.Visualizer.Components
 
         private async Task HighlightQulayQuery()
         {
+            Console.WriteLine("HighlightQulayQuery");
             IEnumerable<SyntaxNode> nodes;
 
             if (CodeContainer.CompilationUnit == null || QueryContainer.Selector == null)
@@ -148,7 +148,7 @@ namespace Selectorlyzer.Visualizer.Components
             MatchedDecorators = HighlightSynatxNodes(nodes, "highlight-", true);
 
 
-            await UpdateDecorators([SelectedNodeDecorator, .. MatchedDecorators]);
+            await UpdateDecorators(SelectedNodeDecorator == null ? [.. MatchedDecorators] : [SelectedNodeDecorator, .. MatchedDecorators]);
 
         }
 
